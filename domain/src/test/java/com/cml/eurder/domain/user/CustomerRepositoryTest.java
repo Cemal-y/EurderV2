@@ -1,11 +1,5 @@
 package com.cml.eurder.domain.user;
 
-import com.cml.eurder.domain.DefaultData;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import static com.cml.eurder.domain.user.Role.CUSTOMER;
-import static com.cml.eurder.domain.user.User.Builder.builder;
 
 class CustomerRepositoryTest {
 //    DefaultData defaultData = new DefaultData();

@@ -1,21 +1,19 @@
 package com.cml.eurder.domain.user;
 
-public class Employee extends User {
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-    protected Employee(Builder<?> builder) {
-        super(builder);
+@Entity
+@Table(name = "employees")
+public class Employee extends User {
+    public Employee() {
     }
 
+    public Employee(long id, String firstName, String lastName, String email, Address address, String phoneNumber, String password, Role role) {
+        super(id, firstName, lastName, email, address, phoneNumber, password, role);
+    }
 
-    public static abstract class Builder<T extends Employee> extends User.Builder<T> {
-
-        public static Employee.Builder<?> customerBuilder() {
-            return new Employee.Builder<Employee>() {
-                @Override
-                public Employee build() {
-                    return new Employee(this);
-                }
-            };
-        }
+    public Employee(String firstName, String lastName, String email, Address address, String phoneNumber, String password, Role role) {
+        super(firstName, lastName, email, address, phoneNumber, password, role);
     }
 }

@@ -1,58 +1,21 @@
 package com.cml.eurder.domain.user;
 
-import com.cml.eurder.domain.exceptions.InputCanNotBeNullException;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static com.cml.eurder.domain.user.Address.AddressBuilder.addressBuilder;
-import static com.cml.eurder.domain.user.Role.ADMIN;
-import static com.cml.eurder.domain.user.Role.CUSTOMER;
-import static com.cml.eurder.domain.user.User.Builder.builder;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class EmployeeRepository {
-    ConcurrentHashMap<String, User> employeeDatabase;
+public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
-    public EmployeeRepository() {
-        employeeDatabase = new ConcurrentHashMap<>();
-        createDefaultData();
-    }
+    @Override
+    <S extends Employee> S save(S s);
 
-    public User addEmployee(User employee){
-        checkIfInputNull(employee);
-        employeeDatabase.put(employee.getId(), employee);
-        return employee;
-    }
+    @Override
+    List<Employee> findAll();
 
-    public Collection<User> getAllUsers(){
-        return employeeDatabase.values();
-    }
+    @Override
+    Optional<Employee> findById(Long aLong);
 
-    public User getCustomerById(String id){
-        return employeeDatabase.get(id);
-    }
-
-    public ConcurrentHashMap<String, User> getUserDatabase() {
-        return employeeDatabase;
-    }
-
-    public static <T> void checkIfInputNull(T input) {
-        if (input == null) {
-            throw new InputCanNotBeNullException();
-        }
-    }
-
-    private void createDefaultData(){
-        User employee1 = builder()
-                .withFirstName("John")
-                .withLastName("Snow")
-                .withPhoneNumber("4894889449")
-                .withEmail("john@snow.com")
-                .withPassword("abc")
-                .withAddress(addressBuilder().withCity("Brussel").withStreet("abc").build())
-                .withRole(ADMIN).build();
-        employeeDatabase.put(employee1.getId(), employee1);
-    }
 }

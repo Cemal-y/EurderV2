@@ -3,7 +3,7 @@ package com.cml.eurder.domain.item;
 public interface Orderable {
     String getName();
     String getDescription();
-    Price getPrice();
+    long getPrice();
     int getStockAmount();
-    String getId();
+    long getId();
 }

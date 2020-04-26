@@ -1,82 +1,40 @@
 package com.cml.eurder.domain.item;
 
-import com.cml.eurder.domain.DefaultData;
-import com.cml.eurder.domain.exceptions.InputCanNotBeNullException;
-import com.cml.eurder.domain.exceptions.ItemNotFoundException;
-import com.cml.eurder.domain.order.Order;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static com.cml.eurder.domain.item.Currency.EURO;
-import static com.cml.eurder.domain.item.Item.ItemBuilder.itemBuilder;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class ItemRepository {
-    private ConcurrentHashMap<String, Item> itemDatabase;
+public interface ItemRepository extends CrudRepository<Item, Long> {
 
-    DefaultData defaultData;
-    @Autowired
-    public ItemRepository(DefaultData defaultData) {
-        this.itemDatabase = new ConcurrentHashMap<>();
-        this.defaultData = defaultData;
-//        this.defaultData = new DefaultData();
-        createDefaultData();
-    }
+    @Override
+    Collection<Item> findAll();
 
-    public ConcurrentHashMap<String, Item> getItemDatabase() {
-        return itemDatabase;
-    }
+//    Item findById(long aLong);
 
-    public Collection<Item> getAllItems(){
-        return itemDatabase.values();
-    }
+    @Override
+    Optional<Item> findById(Long aLong);
 
-    public Item addItem(Item item){
-        checkIfInputNull(item);
-//        checkIfItemIsAvailable(item);
-        itemDatabase.put(item.getId(), item);
-        return item;
-    }
+    @Override
+    <S extends Item> S save(S s);
 
-    public Item updateItem(Item item, String id){
-        checkIfInputNull(item);
-        itemDatabase.get(id).setName(item.getName())
-                .setPrice(item.getPrice()).setDescription(item.getDescription())
-                .setStockAmount(item.getStockAmount());
-        return item;
-    }
+    @Override
+    void deleteById(Long aLong);
 
-    public Item getItemById(String id){
-        return itemDatabase.get(id);
-    }
+    @Override
+    void delete(Item item);
 
 
 
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("update Item i set i.currency = :currency, i.description = :description, i.name = :name, i.price = :price, i.stockAmount = :stockAmount where i.id = :id")
+    void updateItem(@Param("currency") Currencies item, @Param("description") String description,
+                              @Param("name") String name, @Param("price") long price, @Param("stockAmount") int stockAmount, @Param("id") long id);
 
-//    private void checkIfItemIsAvailable(Item item) {
-//        if (!item.isAvailable()){
-//            throw new ItemIsNotAvailableException();
-//        }
-//    }
-
-    public static <T> void checkIfInputNull(T input) {
-        if (input == null) {
-            throw new InputCanNotBeNullException();
-        }
-    }
-
-    public void createDefaultData(){
-//        Item smartphone = itemBuilder().withStockAmount(10).withName("Laptop")
-//                .withPrice(new Price(700, EURO)).build();
-//        Item laptop = itemBuilder().withStockAmount(10).withName("Smarthone")
-//                .withPrice(new Price(700, EURO)).build();
-//        itemDatabase.put(smartphone.getId(), smartphone);
-//        itemDatabase.put(laptop.getId(), laptop);
-        for (Item item : defaultData.getDefaultItems()){
-            this.addItem(item);
-        }
-    }
 }

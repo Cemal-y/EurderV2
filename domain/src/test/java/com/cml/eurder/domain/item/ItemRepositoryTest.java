@@ -1,14 +1,9 @@
 package com.cml.eurder.domain.item;
 
-import com.cml.eurder.domain.DefaultData;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-
-import static com.cml.eurder.domain.item.Item.ItemBuilder.itemBuilder;
-
 class ItemRepositoryTest {
+
 //    ItemRepository itemRepository = new ItemRepository();
 //    Item item1 = itemBuilder().withStockAmount(10).build();
 //    Item item2 = itemBuilder().withStockAmount(0).withPrice(new Price(700, Currency.EURO)).build();

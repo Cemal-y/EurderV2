@@ -3,8 +3,6 @@ package com.cml.eurder.service.order;
 import com.cml.eurder.domain.item.ItemRepository;
 import com.cml.eurder.domain.order.OrderRepository;
 import com.cml.eurder.domain.user.CustomerRepository;
-import com.cml.eurder.service.item.ItemDto;
-import com.cml.eurder.service.item.ItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +40,7 @@ public class OrderService {
         return orderMapper.toDto(orderRepository.reorderAPreviousOrder(orderId));
     }
 
-    public Collection<OrderDto> getOrdersOfACustomer(String customerId) {
+    public Collection<OrderDto> getOrdersOfACustomer(long customerId) {
         return orderMapper.toDto(orderRepository.getOrdersOfACustomer(customerId));
     }
 

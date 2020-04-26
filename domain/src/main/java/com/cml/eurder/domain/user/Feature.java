@@ -10,6 +10,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public enum  Feature {
     ADD_ITEM(Role.ADMIN),
     UPDATE_ITEM(Role.ADMIN),
+    DELETE_ITEM(Role.ADMIN),
     VIEW_ALL_CUSTOMERS(Role.ADMIN),
     VIEW_DETAILS_OF_CUSTOMER(Role.ADMIN),
     VIEW_ALL_ORDERS(Role.ADMIN),

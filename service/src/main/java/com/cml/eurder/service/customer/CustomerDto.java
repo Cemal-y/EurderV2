@@ -1,16 +1,12 @@
-package com.cml.eurder.service.user;
+package com.cml.eurder.service.customer;
 
 import com.cml.eurder.domain.user.Address;
 import com.cml.eurder.domain.user.Role;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.w3c.dom.ls.LSOutput;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerDto {
 
-    private String id;
+    private long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -22,20 +18,8 @@ public class CustomerDto {
     public CustomerDto() {
     }
 
-//        @JsonCreator
-//    public UserDto(@JsonProperty String id, @JsonProperty String firstName, @JsonProperty String lastName
-//            , @JsonProperty String email, @JsonProperty Address address, @JsonProperty  String phoneNumber, @JsonProperty Role role) {
-//        this.id = id;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.email = email;
-//        this.address = address;
-//        this.phoneNumber = phoneNumber;
-//        this.role = role;
-//    }
 
-
-    public CustomerDto(String id, String firstName, String lastName, String email
+        public CustomerDto(long id, String firstName, String lastName, String email
             , Address address, String phoneNumber, String password, Role role) {
         this.id = id;
         this.firstName = firstName;
@@ -48,7 +32,7 @@ public class CustomerDto {
     }
 
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 

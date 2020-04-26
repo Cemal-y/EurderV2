@@ -1,23 +1,39 @@
 package com.cml.eurder.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import javax.persistence.*;
 
-import java.util.UUID;
-
+@Entity
+@Table(name = "addresses")
 public class Address {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id")
+    private long id;
+    @Column(name = "street")
     private String street;
+    @Column(name = "street_number")
     private String streetNumber;
+    @Column(name = "postal_code")
     private String postalCode;
+    @Column(name = "city")
     private String city;
-    private String id;
 
-    @JsonCreator
-    public Address(AddressBuilder addressBuilder) {
-        id = UUID.randomUUID().toString();
-        street = addressBuilder.street;
-        streetNumber = addressBuilder.streetNumber;
-        postalCode = addressBuilder.postalCode;
-        city = addressBuilder.city;
+    public Address() {
+    }
+
+    public Address(long id, String street, String streetNumber, String postalCode, String city) {
+        this.id = id;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.postalCode = postalCode;
+        this.city = city;
+    }
+
+    public Address(String street, String streetNumber, String postalCode, String city) {
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.postalCode = postalCode;
+        this.city = city;
     }
 
     public String getStreet() {
@@ -36,42 +52,4 @@ public class Address {
         return city;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public static class AddressBuilder {
-        String street;
-        String streetNumber;
-        String postalCode;
-        String city;
-
-            public static AddressBuilder addressBuilder () {
-            return new AddressBuilder();
-        }
-
-            public Address build () {
-            return new Address(this);
-        }
-
-            public AddressBuilder withStreet (String street){
-            this.street = street;
-            return this;
-        }
-
-            public AddressBuilder withStreetNumber (String streetNumber){
-            this.streetNumber = streetNumber;
-            return this;
-        }
-
-            public AddressBuilder withPostalCode (String postalCode){
-            this.postalCode = postalCode;
-            return this;
-        }
-
-            public AddressBuilder withCity (String city){
-            this.city = city;
-            return this;
-        }
-        }
-    }
+}

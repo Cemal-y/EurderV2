@@ -1,13 +1,9 @@
 package com.cml.eurder.api.controllers;
 
-import com.cml.eurder.domain.order.OrderRepository;
 import com.cml.eurder.service.order.CreateOrderDto;
 import com.cml.eurder.service.order.OrderDto;
 import com.cml.eurder.service.order.OrderService;
-import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiOperation;
-import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-
-import static org.apache.logging.log4j.message.MapMessage.MapFormat.JSON;
 
 @RestController
 @RequestMapping(path = OrderController.ORDER_RESOURCE_PATH)
@@ -64,7 +58,7 @@ public class OrderController {
     @GetMapping(path = "/customer/{id}", produces = "application/json")
     @ApiOperation(value = "Get orders of a customer", notes = "A list of all orders of a customer will be returned", response = OrderDto.class)
     @ResponseStatus(HttpStatus.OK)
-    public Collection<OrderDto> getOrdersOfACustomer(@PathVariable("id") String id) {
+    public Collection<OrderDto> getOrdersOfACustomer(@PathVariable("id") long id) {
         logger.info("Returning all orders");
         return orderService.getOrdersOfACustomer(id);
     }

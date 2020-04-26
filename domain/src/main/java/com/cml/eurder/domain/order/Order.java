@@ -24,10 +24,11 @@ public class Order {
     }
 
     public double calculateTotalPrice(){
-        return itemsWithAmount.stream()
-                .mapToDouble(orderItem -> orderItem.getItem().getPrice().getPriceAmount()
-                        * orderItem.getItemAmount())
-                .sum();
+//        return itemsWithAmount.stream()
+//                .mapToDouble(orderItem -> orderItem.getItem().getPrice().getPriceAmount()
+//                        * orderItem.getItemAmount())
+//                .sum();
+        return 0;
     }
 
 

@@ -4,7 +4,6 @@ import com.cml.eurder.domain.item.ItemRepository;
 import com.cml.eurder.domain.order.Order;
 import com.cml.eurder.domain.order.OrderItem;
 import com.cml.eurder.domain.user.CustomerRepository;
-import com.cml.eurder.service.user.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,9 +31,9 @@ public class OrderMapper {
     }
 
     public Order toOrder(CreateOrderDto createOrderDto) {
-        return new Order(customerRepository.getCustomerById(createOrderDto.getCustomerId())
+        return new Order(customerRepository.findById(createOrderDto.getCustomerId()).get()
                 , createOrderDto.getItems().keySet()
-                .stream().map(id -> new OrderItem(itemRepository.getItemById(id), createOrderDto.getItems().get(id)))
+                .stream().map(id -> new OrderItem(itemRepository.findById(Long.parseLong(id)).get(), createOrderDto.getItems().get(id)))
                 .collect(Collectors.toList())
         );
     }

@@ -53,5 +53,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(userAuthenticationProvider);
     }
-
 }

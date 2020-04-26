@@ -1,41 +1,34 @@
 package com.cml.eurder.domain.order;
 
-import com.cml.eurder.domain.DefaultData;
 import com.cml.eurder.domain.exceptions.InputCanNotBeNullException;
 import com.cml.eurder.domain.exceptions.OrderNotFoundException;
-import com.cml.eurder.domain.item.Currency;
-import com.cml.eurder.domain.item.Item;
-import com.cml.eurder.domain.item.ItemRepository;
-import com.cml.eurder.domain.item.Price;
-import com.cml.eurder.domain.user.Customer;
-import com.cml.eurder.domain.user.CustomerRepository;
-import com.cml.eurder.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.cml.eurder.domain.item.Currency.EURO;
-import static com.cml.eurder.domain.item.Item.ItemBuilder.itemBuilder;
 import static com.cml.eurder.domain.order.OrderState.DELIVERED;
 import static com.cml.eurder.domain.order.OrderState.IN_PROGRESS;
-import static com.cml.eurder.domain.user.Customer.Builder.customerBuilder;
 
 @Repository
 public class OrderRepository {
     ConcurrentHashMap<String, Order> orderDatabase;
 
-    DefaultData defaultData;
+//    DefaultData defaultData;
+
+//    @Autowired
+//    public OrderRepository(DefaultData defaultData) {
+//        this.orderDatabase = new ConcurrentHashMap<>();
+//        this.defaultData = defaultData;
+//        createDefaultData();
+//    }
 
     @Autowired
-    public OrderRepository(DefaultData defaultData) {
+    public OrderRepository() {
         this.orderDatabase = new ConcurrentHashMap<>();
-        this.defaultData = defaultData;
-        createDefaultData();
+//        createDefaultData();
     }
 
     public Order createOrder(Order order){
@@ -50,9 +43,9 @@ public class OrderRepository {
                 .forEach(orderItem -> orderItem.getItem().deductFromStockAmount(orderItem.getItemAmount()));
     }
 
-    public Collection<Order> getOrdersOfACustomer(String customerId){
+    public Collection<Order> getOrdersOfACustomer(long customerId){
        return orderDatabase.values().stream()
-                .filter(order -> order.getCustomer().getId().equals(customerId))
+                .filter(order -> order.getCustomer().getId() == customerId)
                 .collect(Collectors.toList());
     }
 
@@ -90,9 +83,9 @@ public class OrderRepository {
         }
     }
 
-    private void createDefaultData(){
-        for (Order order:defaultData.getDefaultOrders()){
-            this.createOrder(order);
-        }
-    }
+//    private void createDefaultData(){
+//        for (Order order:defaultData.getDefaultOrders()){
+//            this.createOrder(order);
+//        }
+//    }
 }

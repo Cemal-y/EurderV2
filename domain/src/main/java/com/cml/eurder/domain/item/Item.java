@@ -1,28 +1,57 @@
 package com.cml.eurder.domain.item;
 
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.Objects;
 
+@Entity
+@Table(name = "items")
 public class Item implements Orderable {
-    private String id;
+    @Id
+    @Column(name = "item_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "stock_amount")
     private int stockAmount;
-    private Price price;
+    @Column(name = "price")
+    private long price;
+    @Column(name = "currency")
+    @Enumerated(EnumType.STRING)
+    private Currencies currency;
+    @Column(name = "stock_status")
     private boolean isInStock;
+    @Column(name = "shipping_date")
     private LocalDate shippingDate;
 
     public Item() {
 //        setShippingDate();
     }
 
-    public Item(ItemBuilder itemBuilder) {
-        this.id = UUID.randomUUID().toString();
-        this.name = itemBuilder.name;
-        this.description = itemBuilder.description;
-        this.stockAmount = itemBuilder.stockAmount;
-        this.price = itemBuilder.price;
+    public Item(String name, String description, int stockAmount, long price
+            , Currencies currency) {
+        this.name = name;
+        this.description = description;
+        this.stockAmount = stockAmount;
+        this.price = price;
+        this.currency = currency;
         setShippingDate();
+        setItemToAvailableIfStockISEnough();
+    }
+
+    public Item(long id, String name, String description, int stockAmount, long price
+            , Currencies currency) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.stockAmount = stockAmount;
+        this.price = price;
+        this.currency = currency;
+        setShippingDate();
+        setItemToAvailableIfStockISEnough();
     }
 
     public void setShippingDate() {
@@ -49,20 +78,21 @@ public class Item implements Orderable {
         return this;
     }
 
-    public Item setDescription(String description) {
-        this.description = description;
-        return this;
+    public Currencies getCurrency() {
+        return currency;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public Item setPrice(Price price) {
+    @Override
+    public long getPrice() {
+        return price;
+    }
+
+    public void setPrice(long price) {
         this.price = price;
-        return this;
-    }
-
-    public Item setStockAmount(int stockAmount) {
-        this.stockAmount = stockAmount;
-        return this;
     }
 
     private void setItemToAvailableIfStockISEnough() {
@@ -73,11 +103,14 @@ public class Item implements Orderable {
         }
     }
 
-
     public boolean isInStock() {
         return isInStock;
     }
 
+    public Item setDescription(String description) {
+        this.description = description;
+        return this;
+    }
 
     @Override
     public String getName() {
@@ -90,17 +123,12 @@ public class Item implements Orderable {
     }
 
     @Override
-    public Price getPrice() {
-        return price;
-    }
-
-    @Override
     public int getStockAmount() {
         return stockAmount;
     }
 
     @Override
-    public String getId() {
+    public long getId() {
         return id;
     }
 
@@ -108,37 +136,4 @@ public class Item implements Orderable {
         return shippingDate;
     }
 
-    public static class ItemBuilder {
-        private String name;
-        private String description;
-        private int stockAmount;
-        private Price price;
-
-        private ItemBuilder() {
-        }
-
-        public static ItemBuilder itemBuilder() {
-            return new ItemBuilder();
-        }
-        public Item build() {
-            return new Item(this);
-        }
-
-        public ItemBuilder withName(String name) {
-            this.name = name;
-            return this;
-        }
-        public ItemBuilder withDescription(String description) {
-            this.description = description;
-            return this;
-        }
-        public ItemBuilder withStockAmount(int stockAmount) {
-            this.stockAmount = stockAmount;
-            return this;
-        }
-        public ItemBuilder withPrice(Price price) {
-            this.price = price;
-            return this;
-        }
-    }
 }

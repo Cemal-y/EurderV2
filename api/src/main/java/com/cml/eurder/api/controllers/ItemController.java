@@ -1,6 +1,6 @@
 package com.cml.eurder.api.controllers;
 
-import com.cml.eurder.domain.item.ItemRepository;
+import com.cml.eurder.service.item.CreateItemDto;
 import com.cml.eurder.service.item.ItemDto;
 import com.cml.eurder.service.item.ItemService;
 import io.swagger.annotations.ApiOperation;
@@ -19,12 +19,10 @@ public class ItemController {
     public static final String ITEM_RESOURCE_PATH = "/items";
     private final Logger logger = LoggerFactory.getLogger(ItemController.class);
     private ItemService itemService;
-    private ItemRepository itemRepository;
 
     @Autowired
-    public ItemController(ItemService itemService, ItemRepository itemRepository) {
+    public ItemController(ItemService itemService) {
         this.itemService = itemService;
-        this.itemRepository = itemRepository;
     }
 
     @GetMapping(produces = "application/json")
@@ -36,21 +34,38 @@ public class ItemController {
     }
 
     @PreAuthorize("hasAuthority('ADD_ITEM')")
-    @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ApiOperation(value = "Add item", notes = "An item will be added to the items database", response = ItemDto.class)
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto addItem(@RequestBody ItemDto itemDto) {
+    public ItemDto addItem(@RequestBody CreateItemDto itemDto) {
         logger.info("Adding a new item");
         return itemService.addItem(itemDto);
     }
 
     @PreAuthorize("hasAuthority('UPDATE_ITEM')")
-    @PutMapping(path = "/update/{ID}", consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "{ID}", consumes = "application/json", produces = "application/json")
     @ApiOperation(value = "Update item", notes = "The item will be updated", response = ItemDto.class)
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto updateItem(@RequestBody ItemDto itemDto, @PathVariable("ID") String id) {
+    public ItemDto updateItem(@RequestBody CreateItemDto itemDto, @PathVariable("ID") long id) {
         logger.info("Updating an item");
         return itemService.updateItem(itemDto, id);
     }
 
+    @PreAuthorize("hasAuthority('DELETE_ITEM')")
+    @DeleteMapping(path = "{ID}", produces = "application/json")
+    @ApiOperation(value = "Delete item", notes = "The item will be deleted", response = ItemDto.class)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteItem(@PathVariable("ID") long id) {
+        logger.info("Deleting an item");
+        itemService.deleteItemById(id);
+    }
+
+    @PreAuthorize("hasAuthority('DELETE_ITEM')")
+    @DeleteMapping(produces = "application/json")
+    @ApiOperation(value = "Delete all items", notes = "All items will be deleted", response = ItemDto.class)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAllItems() {
+        logger.info("Deleting all items");
+        itemService.deleteAllItems();
+    }
 }

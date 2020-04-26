@@ -35,7 +35,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         if(user != null){
             return new UsernamePasswordAuthenticationToken(
                     user.getFirstName(),
-                    user.getPassWord(),
+                    user.getPassword(),
                     rolesToGrantedAuthorities(Feature.getFeaturesForRoles(newArrayList(user.getRole().toString()))));
         }
         throw new BadCredentialsException("The provided credentials were invalid.");
