@@ -1,38 +1,28 @@
 package com.cml.eurder.service;
 
-import com.cml.eurder.domain.item.Item;
-import com.cml.eurder.domain.order.Order;
-import com.cml.eurder.domain.order.OrderItem;
-import com.cml.eurder.domain.user.*;
+import com.cml.eurder.domain.user.Address;
+import com.cml.eurder.domain.user.Role;
 import com.cml.eurder.service.customer.CreateCustomerDto;
-import com.cml.eurder.service.customer.CustomerDto;
 import com.cml.eurder.service.employee.CreateEmployeeDto;
-import com.cml.eurder.service.employee.EmployeeDto;
 import com.cml.eurder.service.item.CreateItemDto;
-import com.cml.eurder.service.item.ItemDto;
+import com.cml.eurder.service.order.CreateOrderDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.cml.eurder.domain.item.Currencies.EURO;
 import static com.cml.eurder.domain.item.Currencies.US_DOLLARS;
-import static com.cml.eurder.domain.user.Role.CUSTOMER;
 
 
 @Component
 public class DefaultData {
     List<CreateCustomerDto> defaultCustomers = new ArrayList<>();
     List<CreateItemDto> defaultItems = new ArrayList<>();
-    List<Order> defaultOrders = new ArrayList<>();
+    List<CreateOrderDto> defaultOrders = new ArrayList<>();
     List<CreateEmployeeDto> defaultEmployees = new ArrayList<>();
 
-
-    //    private void createDefaultData(){
-//        for (User customer:defaultData.getDefaultCustomers()){
-//            this.addUser(customer);
-//        }
-//    }
 
 
     public DefaultData() {
@@ -55,6 +45,11 @@ public class DefaultData {
         CreateItemDto laptop = new CreateItemDto("Smarthone", "description", 100, 800, EURO);
         defaultItems.add(laptop);
 
+        CreateOrderDto order1 = new CreateOrderDto(1L, Map.of(1L, 2));
+        CreateOrderDto order2 = new CreateOrderDto(1L, Map.of(2L, 3));
+
+        defaultOrders.add(order1);
+        defaultOrders.add(order2);
 //        OrderItem orderItem1 = new OrderItem(smartphone, 2);
 //        OrderItem orderItem2 = new OrderItem(laptop, 1);
 //
@@ -74,7 +69,7 @@ public class DefaultData {
         return defaultItems;
     }
 
-//    public List<Order> getDefaultOrders() {
-//        return defaultOrders;
-//    }
+    public List<CreateOrderDto> getDefaultOrders() {
+        return defaultOrders;
+    }
 }

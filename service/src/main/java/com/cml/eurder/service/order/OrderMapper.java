@@ -26,14 +26,14 @@ public class OrderMapper {
     }
 
     public OrderDto toDto(Order order) {
-        return new OrderDto(order.getID(), order.getCustomer(), order.getItemsWithAmount()
+        return new OrderDto(order.getId(), order.getCustomer(), order.getItemsWithAmount()
                 , order.getTotalPrice(), order.getOrderState());
     }
 
     public Order toOrder(CreateOrderDto createOrderDto) {
         return new Order(customerRepository.findById(createOrderDto.getCustomerId()).get()
                 , createOrderDto.getItems().keySet()
-                .stream().map(id -> new OrderItem(itemRepository.findById(Long.parseLong(id)).get(), createOrderDto.getItems().get(id)))
+                .stream().map(id -> new OrderItem(itemRepository.findById(id).get(), createOrderDto.getItems().get(id)))
                 .collect(Collectors.toList())
         );
     }

@@ -2,8 +2,9 @@ package com.cml.eurder.service.item;
 
 import com.cml.eurder.domain.exceptions.InputCanNotBeNullException;
 import com.cml.eurder.domain.exceptions.ItemNotFoundException;
-import com.cml.eurder.domain.item.Item;
 import com.cml.eurder.domain.item.ItemRepository;
+import com.cml.eurder.service.DefaultData;
+import com.cml.eurder.service.employee.CreateEmployeeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +16,15 @@ import java.util.Collection;
 public class ItemService {
     private ItemRepository itemRepository;
     private ItemMapper itemMapper;
+    private DefaultData defaultData;
+
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, ItemMapper itemMapper) {
+    public ItemService(ItemRepository itemRepository, ItemMapper itemMapper, DefaultData defaultData) {
       this.itemRepository = itemRepository;
       this.itemMapper = itemMapper;
+      this.defaultData = defaultData;
+      createDefaultData();
     }
 
     public Collection<ItemDto> getAllItemsInTheDataBase() {
@@ -27,12 +32,12 @@ public class ItemService {
     }
 
     public ItemDto addItem(CreateItemDto itemDto){
-        checkIfInputNull(itemDto);
+        checkIfInputIsNull(itemDto);
         return itemMapper.toDto(itemRepository.save(itemMapper.toItem(itemDto)));
     }
 
     public ItemDto updateItem(CreateItemDto itemDto, long id) {
-        checkIfInputNull(itemDto);
+        checkIfInputIsNull(itemDto);
         itemRepository.findAll().stream().filter(item -> item.getId() == id).findAny().orElseThrow(() -> new ItemNotFoundException("id"));
         itemRepository.updateItem(itemDto.getCurrency(), itemDto.getDescription(), itemDto.getName(), itemDto.getPrice(), itemDto.getStockAmount(), id);
         return getItemById(id);
@@ -53,7 +58,7 @@ public class ItemService {
     }
 
 
-    private static <T> void checkIfInputNull(T input) {
+    private static <T> void checkIfInputIsNull(T input) {
         if (input == null) {
             throw new InputCanNotBeNullException();
         }
@@ -61,5 +66,11 @@ public class ItemService {
 
     private void checkIfIdExists(long id){
         itemRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("id"));
+    }
+
+    private void createDefaultData(){
+        for (CreateItemDto itemDto:defaultData.getDefaultItems()){
+            this.addItem(itemDto);
+        }
     }
 }

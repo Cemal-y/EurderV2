@@ -1,16 +1,13 @@
 package com.cml.eurder.service.order;
 
-import com.cml.eurder.domain.item.Item;
 import com.cml.eurder.domain.order.OrderItem;
 import com.cml.eurder.domain.order.OrderState;
-import com.cml.eurder.domain.user.Customer;
 import com.cml.eurder.domain.user.User;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class OrderDto {
-    private String ID;
+    private long id;
     private User customer;
     private List<OrderItem> items;
     private double totalPrice;
@@ -18,16 +15,16 @@ public class OrderDto {
 
     public OrderDto() {
     }
-    public OrderDto(String ID, User customer, List<OrderItem> items, double totalPrice, OrderState orderState) {
-        this.ID = ID;
+    public OrderDto(long id, User customer, List<OrderItem> items, double totalPrice, OrderState orderState) {
+        this.id = id;
         this.customer = customer;
         this.items = items;
         this.totalPrice = totalPrice;
         this.orderState = orderState;
     }
 
-    public String getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
 
     public User getCustomer() {

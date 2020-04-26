@@ -36,7 +36,7 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAuthority('CREATE_ORDER')")
-    @PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ApiOperation(value = "Create order", notes = "A new order will be created", response = OrderDto.class)
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto createOrder(@RequestBody CreateOrderDto orderDto) {
@@ -45,13 +45,12 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAuthority('CREATE_ORDER')")
-    @PostMapping(path = "/reorder", consumes = "application/json", produces = "application/json")
-    @ApiOperation(value = "Create order", notes = "An order will be reordered", response = OrderDto.class)
+    @PostMapping(path = "/customer/{customer_id}/{order_id}", produces = "application/json")
+    @ApiOperation(value = "Reorder an order", notes = "An order will be reordered", response = OrderDto.class)
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto reorder(@RequestBody String orderId) {
+    public OrderDto reorder(@PathVariable("customer_id") long customerId, @PathVariable("order_id") long orderId) {
         logger.info("Reordering a previous order");
-        JSONObject jsonObject = new JSONObject(orderId);
-        return orderService.reorderAPreviousOrder(jsonObject.getString("orderId"));
+        return orderService.reorder(orderId, customerId);
     }
 
     @PreAuthorize("hasAuthority('VIEW_ALL_ORDERS')")

@@ -26,9 +26,4 @@ public class ItemMapper {
         return new Item(itemDto.getName(), itemDto.getDescription(), itemDto.getStockAmount(), itemDto.getPrice(),
                 itemDto.getCurrency());
     }
-
-    public Item toItem(ItemDto itemDto) {
-        return new Item(itemDto.getId(), itemDto.getName(), itemDto.getDescription(), itemDto.getStockAmount(), itemDto.getPrice(),
-                itemDto.getCurrency());
-    }
 }

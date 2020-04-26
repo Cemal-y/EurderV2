@@ -1,22 +1,37 @@
 package com.cml.eurder.domain.order;
 
-import com.cml.eurder.domain.user.User;
+import com.cml.eurder.domain.user.Customer;
 
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static com.cml.eurder.domain.order.OrderState.DELIVERED;
 import static com.cml.eurder.domain.order.OrderState.IN_PROGRESS;
 
+@Entity
+@Table(name = "orders")
 public class Order {
-    private final String ID;
-    private User customer;
-    private List<OrderItem> itemsWithAmount;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<OrderItem> itemsWithAmount = new ArrayList<>();
+    @Column(name = "total_price")
     private double totalPrice;
+    @Column(name = "order_state")
+    @Enumerated(EnumType.STRING)
     private OrderState orderState;
 
-    public Order(User customer, List<OrderItem> itemsToAdd) {
-        this.ID = UUID.randomUUID().toString();
+    public Order() {
+    }
+
+    public Order(Customer customer, List<OrderItem> itemsToAdd) {
         this.itemsWithAmount = itemsToAdd;
         this.customer = customer;
         this.orderState = IN_PROGRESS;
@@ -24,11 +39,10 @@ public class Order {
     }
 
     public double calculateTotalPrice(){
-//        return itemsWithAmount.stream()
-//                .mapToDouble(orderItem -> orderItem.getItem().getPrice().getPriceAmount()
-//                        * orderItem.getItemAmount())
-//                .sum();
-        return 0;
+        return itemsWithAmount.stream()
+                .mapToDouble(orderItem -> orderItem.getItem().getPrice()
+                        * orderItem.getItemAmount())
+                .sum();
     }
 
 
@@ -44,11 +58,11 @@ public class Order {
         orderState = DELIVERED;
     }
 
-    public java.lang.String getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
 
-    public User getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
