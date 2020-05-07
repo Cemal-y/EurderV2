@@ -16,6 +16,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping(path = OrderController.ORDER_RESOURCE_PATH)
+@CrossOrigin(origins = "http://localhost:4200")
 public class OrderController {
     public static final String ORDER_RESOURCE_PATH = "/orders";
     private final Logger logger = LoggerFactory.getLogger(OrderController.class);

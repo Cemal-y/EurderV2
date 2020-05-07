@@ -16,6 +16,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping(path = CustomerController.CUSTOMER_RESOURCE_PATH)
+@CrossOrigin(origins = "http://localhost:4200")
 public class CustomerController {
     public static final String CUSTOMER_RESOURCE_PATH = "/customers";
     private final Logger logger = LoggerFactory.getLogger(CustomerController.class);

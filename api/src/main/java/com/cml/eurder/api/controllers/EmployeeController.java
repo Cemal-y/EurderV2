@@ -18,6 +18,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping(path = EmployeeController.EMPLOYEE_RESOURCE_PATH)
+@CrossOrigin(origins = "http://localhost:4200")
 public class EmployeeController {
 
     public static final String EMPLOYEE_RESOURCE_PATH = "/employees";

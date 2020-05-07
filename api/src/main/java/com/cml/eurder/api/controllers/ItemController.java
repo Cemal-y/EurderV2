@@ -15,6 +15,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping(path = ItemController.ITEM_RESOURCE_PATH)
+@CrossOrigin(origins = "http://localhost:4200")
 public class ItemController {
     public static final String ITEM_RESOURCE_PATH = "/items";
     private final Logger logger = LoggerFactory.getLogger(ItemController.class);
